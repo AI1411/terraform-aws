@@ -116,3 +116,34 @@ resource "aws_route" "private_1" {
   nat_gateway_id = aws_nat_gateway.nat_gateway_1.id
   destination_cidr_block = "0.0.0.0/0"
 }
+
+//resource "aws_security_group" "sg" {
+//  name = "sg"
+//  vpc_id = aws_vpc.vpc.id
+//}
+//
+//resource "aws_security_group_rule" "ingress" {
+//  from_port = 80
+//  protocol = "tcp"
+//  security_group_id = aws_security_group.sg.id
+//  to_port = 80
+//  type = "ingress"
+//  cidr_blocks = ["0.0.0.0/0"]
+//}
+//
+//resource "aws_security_group_rule" "egress" {
+//  from_port = 0
+//  protocol = "-1"
+//  security_group_id = aws_security_group.sg.id
+//  to_port = 0
+//  type = "egress"
+//  cidr_blocks = ["0.0.0.0/0"]
+//}
+
+module "sg" {
+  source = "../security_group"
+  name = "main"
+  vpc_id = aws_vpc.vpc.id
+  port = 80
+  cidr_blocks = ["0.0.0.0/0"]
+}
